@@ -239,7 +239,7 @@ function enviarWhats() {
   let totais = calcular();
 
   let msg =
-`*NOVO PEDIDO DE CAMISETAS*
+*NOVO PEDIDO DE CAMISETAS*
 
 Cliente: ${cliente}
 Celular: ${celular}
@@ -259,8 +259,9 @@ Quantidade: ${preta.qtd}
 Subtotal: R$ ${totais.totalPreta.toFixed(2).replace(".", ",")}
 
 TOTAL GERAL: R$ ${totais.totalGeral.toFixed(2).replace(".", ",")}
-🔹 <b>PIX (opcional)</b><br>
-Chave (CPF): 170.575.838-00
+
+🔹 *PIX (opcional)*  
+Chave: 170.575.838-00
 ;
 
   let url = "https://wa.me/5514996787736?text=" + encodeURIComponent(msg);
@@ -271,5 +272,3 @@ Chave (CPF): 170.575.838-00
 
 </body>
 </html>
-
-
