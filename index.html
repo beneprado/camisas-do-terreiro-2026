@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Pedido de Camisetas</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f0f0f0;
+    padding: 20px;
+  }
+  .container {
+    max-width: 520px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+  }
+  .tituloBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .tituloBox img {
+    width: 55px;
+    height: 55px;
+    border-radius: 6px;
+    object-fit: cover;
+  }
+
+  h3 {
+    margin-top: 25px;
+    color: #444;
+  }
+  input, select {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+  }
+  button {
+    width: 100%;
+    padding: 14px;
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 15px;
+  }
+  .pixBox {
+    margin-top: 25px;
+    padding: 15px;
+    background: #e8ffe8;
+    border: 1px solid #9ada9a;
+    border-radius: 8px;
+  }
+  .pixBox button {
+    background: #007aff;
+    margin-top: 10px;
+  }
+  #totalGeral {
+    font-size: 22px;
+    font-weight: bold;
+    color: #222;
+    margin-top: 20px;
+  }
+  .campoNome {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="tituloBox">
+      <img src="https://i.ibb.co/fGTFHYtR/camisa-branca.png">
+      <h2>Pedido de Camisetas</h2>
+      <img src="https://i.ibb.co/RG0gmT67/camisa-preta.png">
+  </div>
+
+  <label>Nome do Cliente</label>
+  <input type="text" id="cliente" placeholder="Digite o nome">
+
+  <label>Celular</label>
+  <input type="text" id="celular" placeholder="Ex: (14) 99876-0000">
+
+  <h3>Camisa Branca</h3>
+
+  <label>Nome na camisa?</label>
+  <select id="brancaNome" onchange="toggleNome('branca')">
+    <option value="nao">Não</option>
+    <option value="sim">Sim</option>
+  </select>
+
+  <div id="brancaCampoNome" class="campoNome">
+    <label>Nome que vai na camisa</label>
+    <input type="text" id="brancaNomePersonalizado" placeholder="Ex: Fê, João, Ana Clara">
+  </div>
+
+  <label>Tamanho</label>
+  <select id="brancaTamanho">
+    <option>P</option>
+    <option>M</option>
+    <option>G</option>
+    <option>GG</option>
+    <option>XG</option>
+  </select>
+
+  <label>Quantidade</label>
+  <input type="number" id="brancaQtd" value="0" min="0">
+
+  <p id="totalBranca"><b>Total Camisa Branca:</b> R$ 0,00</p>
+
+  <h3>Camisa Preta</h3>
+
+  <label>Nome na camisa?</label>
+  <select id="pretaNome" onchange="toggleNome('preta')">
+    <option value="nao">Não</option>
+    <option value="sim">Sim</option>
+  </select>
+
+  <div id="pretaCampoNome" class="campoNome">
+    <label>Nome que vai na camisa</label>
+    <input type="text" id="pretaNomePersonalizado" placeholder="Ex: Fê, João, Ana Clara">
+  </div>
+
+  <label>Tamanho</label>
+  <select id="pretaTamanho">
+    <option>P</option>
+    <option>M</option>
+    <option>G</option>
+    <option>GG</option>
+    <option>XG</option>
+  </select>
+
+  <label>Quantidade</label>
+  <input type="number" id="pretaQtd" value="0" min="0">
+
+  <p id="totalPreta"><b>Total Camisa Preta:</b> R$ 0,00</p>
+
+  <p id="totalGeral">Total Geral: R$ 0,00</p>
+
+  <button onclick="enviarWhats()">Enviar Pedido pelo WhatsApp</button>
+
+  <!-- 📌 PIX SIMPLES (sua chave CPF) -->
+  <div class="pixBox">
+    <b>Pagamento via PIX (opcional)</b><br><br>
+    Chave PIX (CPF):  
+    <b id="chavePix">170.575.838-00</b>
+
+    <button onclick="copiarPix()">Copiar chave PIX</button>
+  </div>
+
+</div>
+
+<script>
+
+function copiarPix() {
+    let chave = document.getElementById("chavePix").innerText;
+    navigator.clipboard.writeText(chave);
+    alert("Chave PIX copiada!");
+}
+
+function toggleNome(cor) {
+  let select = document.getElementById(cor + "Nome").value;
+  let campo = document.getElementById(cor + "CampoNome");
+  campo.style.display = (select === "sim") ? "block" : "none";
+}
+
+setInterval(calcular, 300);
+
+function calcular() {
+  let totalBranca = 0;
+  let totalPreta = 0;
+
+  function precoCamisa(tamanho, comNome) {
+    if (tamanho === "XG") return comNome ? 65 : 55;
+    return comNome ? 60 : 50;
+  }
+
+  let tBranca = document.getElementById("brancaTamanho").value;
+  let comNomeBranca = document.getElementById("brancaNome").value === "sim";
+  let precoBranca = precoCamisa(tBranca, comNomeBranca);
+  let qtdBranca = parseInt(document.getElementById("brancaQtd").value);
+  totalBranca = precoBranca * qtdBranca;
+
+  document.getElementById("totalBranca").textContent =
+    "Total Camisa Branca: R$ " + totalBranca.toFixed(2).replace(".", ",");
+
+  let tPreta = document.getElementById("pretaTamanho").value;
+  let comNomePreta = document.getElementById("pretaNome").value === "sim";
+  let precoPreta = precoCamisa(tPreta, comNomePreta);
+  let qtdPreta = parseInt(document.getElementById("pretaQtd").value);
+  totalPreta = precoPreta * qtdPreta;
+
+  document.getElementById("totalPreta").textContent =
+    "Total Camisa Preta: R$ " + totalPreta.toFixed(2).replace(".", ",");
+
+  let totalGeral = totalBranca + totalPreta;
+
+  document.getElementById("totalGeral").textContent =
+    "Total Geral: R$ " + totalGeral.toFixed(2).replace(".", ",");
+
+  return { totalBranca, totalPreta, totalGeral };
+}
+
+function enviarWhats() {
+
+  let cliente = document.getElementById("cliente").value.trim();
+  let celular = document.getElementById("celular").value.trim();
+
+  if (cliente === "") { alert("Digite o nome do cliente!"); return; }
+  if (celular === "") { alert("Digite o número de celular!"); return; }
+
+  let branca = {
+    nome: document.getElementById("brancaNome").value,
+    personalizado: document.getElementById("brancaNomePersonalizado").value.trim(),
+    tamanho: document.getElementById("brancaTamanho").value,
+    qtd: document.getElementById("brancaQtd").value
+  };
+
+  let preta = {
+    nome: document.getElementById("pretaNome").value,
+    personalizado: document.getElementById("pretaNomePersonalizado").value.trim(),
+    tamanho: document.getElementById("pretaTamanho").value,
+    qtd: document.getElementById("pretaQtd").value
+  };
+
+  let totais = calcular();
+
+  let msg =
+`*NOVO PEDIDO DE CAMISETAS*
+
+Cliente: ${cliente}
+Celular: ${celular}
+
+--- CAMISA BRANCA ---
+Tamanho: ${branca.tamanho}
+Nome na camisa: ${branca.nome === "sim" ? "SIM" : "NÃO"}
+${branca.nome === "sim" ? "Nome escolhido: " + branca.personalizado : ""}
+Quantidade: ${branca.qtd}
+Subtotal: R$ ${totais.totalBranca.toFixed(2).replace(".", ",")}
+
+--- CAMISA PRETA ---
+Tamanho: ${preta.tamanho}
+Nome na camisa: ${preta.nome === "sim" ? "SIM" : "NÃO"}
+${preta.nome === "sim" ? "Nome escolhido: " + preta.personalizado : ""}
+Quantidade: ${preta.qtd}
+Subtotal: R$ ${totais.totalPreta.toFixed(2).replace(".", ",")}
+
+TOTAL GERAL: R$ ${totais.totalGeral.toFixed(2).replace(".", ",")}
+
+🔹 *PIX (opcional)*  
+Chave (CPF): 170.575.838-00
+`;
+
+  let url = "https://wa.me/5514996787736?text=" + encodeURIComponent(msg);
+  window.location.href = url;
+}
+
+</script>
+
+</body>
+</html>
