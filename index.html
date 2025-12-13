@@ -151,10 +151,11 @@
 
   <!-- 📌 PIX SIMPLES (sua chave CPF) -->
   <div class="pixBox">
-         <div style="text-align:center;">
+
+<div style="text-align:center;">
   <b>Pagamento via PIX</b><br><br>
 </div>
-    Chave PIX:  
+    Chave PIX (CPF):  
     <b id="chavePix">170.575.838-00</b>
 
     <button onclick="copiarPix()">Copiar chave PIX</button>
@@ -259,9 +260,9 @@ Subtotal: R$ ${totais.totalPreta.toFixed(2).replace(".", ",")}
 
 TOTAL GERAL: R$ ${totais.totalGeral.toFixed(2).replace(".", ",")}
 
-🔹 <b>PIX (opcional)</b><br>
+🔹 *PIX (opcional)*  
 Chave (CPF): 170.575.838-00
-',
+`;
 
   let url = "https://wa.me/5514996787736?text=" + encodeURIComponent(msg);
   window.location.href = url;
@@ -271,15 +272,3 @@ Chave (CPF): 170.575.838-00
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
